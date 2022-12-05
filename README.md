@@ -1,13 +1,20 @@
 # NA-OSTrack
 
-Noise Aware OSTrack implementation 
+### Noise Aware OSTrack 
+
+Occlusion is one of the most significant challenges encountered by object detectors and trackers. In object tracking, occlusions significantly undermine
+the performance of tracking algorithms. 
+However, being able to track an object of interest through occlusion has been a long standing challenge for different autonomous tasks.
+Here, An occlusion handling algorithm has been developed for OSTrack, one of state-of-the art visual object trackers available. This occlusion handling algorithm, proposed in Atom Tracker, has been further developed and modify into a usable structure for any tracker. The Occlusion Handling algorithm is inside the ``occlusion_handler`` folder and can be used for any tracker that calculates a response map.
 
 
-### NA-OSTRACK Result
-[![NA_OSTRACK_VID](https://img.youtube.com/vi/QpTICA-60JI/0.jpg)](https://youtu.be/QpTICA-60JI)
+### NA-OSTRACK
+[![NA_OSTRACK_VID](https://img.youtube.com/vi/t-67TLveEvg/1.jpg)](https://youtu.be/t-67TLveEvg)
 
 
 ## Install the environment
+All requirements and packages are for OSTrack. 
+
 **Option1**: Use the Anaconda (CUDA 10.2)
 ```
 conda create -n na_ostrack python=3.8
