@@ -8,8 +8,12 @@ However, being able to track an object of interest through occlusion has been a 
 Here, An occlusion handling algorithm has been developed for OSTrack, one of state-of-the art visual object trackers available. This occlusion handling algorithm, proposed in Atom Tracker, has been further developed and modify into a usable structure for any tracker. The Occlusion Handling algorithm is inside the ``occlusion_handler`` folder and can be used for any tracker that calculates a response map.
 
 
-### NA-OSTRACK
-[![NA_OSTRACK_VID](https://img.youtube.com/vi/t-67TLveEvg/1.jpg)](https://youtu.be/t-67TLveEvg)
+## NA-OSTRACK
+<div align="left">
+      <a href="https://youtu.be/t-67TLveEvg">
+         <img src="https://img.youtube.com/vi/t-67TLveEvg/0.jpg" style="width:65%;">
+      </a>
+</div>
 
 
 ## Install the environment
