@@ -7,14 +7,11 @@ the performance of tracking algorithms.
 However, being able to track an object of interest through occlusion has been a long standing challenge for different autonomous tasks.
 Here, An occlusion handling algorithm has been developed for OSTrack, one of state-of-the art visual object trackers available. This occlusion handling algorithm, proposed in Atom Tracker, has been further developed and modify into a usable structure for any tracker. The Occlusion Handling algorithm is inside the ``occlusion_handler`` folder and can be used for any tracker that calculates a response map.
 
-
-## NA-OSTRACK
 <div align="left">
       <a href="https://youtu.be/t-67TLveEvg">
          <img src="https://img.youtube.com/vi/t-67TLveEvg/0.jpg" style="width:65%;">
       </a>
 </div>
-
 
 ## Install the environment
 All requirements and packages are for OSTrack. 
@@ -107,35 +104,36 @@ python tracking/test.py ostrack vitb_384_mae_ce_32x4_ep300 --dataset trackingnet
 python lib/test/utils/transform_trackingnet.py --tracker_name ostrack --cfg_name vitb_384_mae_ce_32x4_ep300
 ```
 
-## Visualization or Debug 
-[Visdom](https://github.com/fossasia/visdom) is used for visualization. 
-1. Alive visdom in the sever by running `visdom`:
+## How to apply Noise Aware Mechanism to your own SOT tracker? :
 
-2. Simply set `--debug 1` during inference for visualization, e.g.:
-```
-python tracking/test.py ostrack ostrack384_elimination_ep300 --dataset vot22 --threads 1 --num_gpus 1 --debug 1
-```
-3. Open `http://localhost:8097` in your browser (remember to change the ip address and port according to the actual situation).
+Firstly, You should import OcclusionHandler class from ``occlusion_handler/occlusion_handler.py ``. Then create a object and set to initialze values the object. Image is first frame of your sequence and init_bbox is initial values of target bbox [x,y,w,h]. If you want use Kalman Filter to predict state of the object when object lost, You can set the 3rd argument of initialize() to True
 
-4. Then you can visualize the candidate elimination process.
-
-![ECE_vis](https://github.com/botaoye/OSTrack/blob/main/assets/vis.png)
-
-
-## Test FLOPs, and Speed
-*Note:* The speeds reported in our paper were tested on a single RTX2080Ti GPU.
-
-```
-# Profiling vitb_256_mae_ce_32x4_ep300
-python tracking/profile_model.py --script ostrack --config vitb_256_mae_ce_32x4_ep300
-# Profiling vitb_384_mae_ce_32x4_ep300
-python tracking/profile_model.py --script ostrack --config vitb_384_mae_ce_32x4_ep300
+```python
+occ_handler = OcclusionHandler()
+occ_handler.initialize(image, init_bbox)
 ```
 
+Then, You may call check() function. In this section:
+
+image : Image is frame at time t
+
+prev_state: previous state is input values of your tracker at time t
+
+curr_state: current state is output values of your tracker at time t   
+
+response_hn: response_hn is response map of your tracker at time t (with hanning wındow)
+
+As a result the check() method returns new state [x,y,w,h]. You can feed with new_state to your SOT tracker.
+
+```
+new_state = occ_handler.check(image, prev_state, curr_state, response_hn)
+```
 
 ## Acknowledgments
 * Thanks for the [OSTRACK](https://github.com/botaoye/OSTrack) and [PyTracking](https://github.com/visionml/pytracking) library, which helps us to quickly implement our ideas.
 * We use the implementation of the OSTrack from the [OSTRACK](https://github.com/botaoye/OSTrack) repo.  
+* Furthermore, we use the implementation of 2-D Kalman Filter from the [Kalman_Filter](https://github.com/RahmadSadli/2-D-Kalman-Filter) repo. 
+
 
 
 

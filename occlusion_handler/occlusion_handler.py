@@ -18,8 +18,9 @@ class OcclusionHandler():
     """ initialize()
         image:      input frame
         init_bbox:  initial target bounding box [x,y,w,h]
+        use_kf:     use Kalman Filter to predict state when object lost
     """
-    def initialize(self, image: np.ndarray, init_bbox: list) -> None:
+    def initialize(self, image: np.ndarray, init_bbox: list, use_kf=False) -> None:
         # Initialize some stuff
         if not self.params.has('device'):
             self.params.device = 'cuda' if self.params.use_gpu else 'cpu'
@@ -74,7 +75,8 @@ class OcclusionHandler():
         self.frame_id = 0
         self.search_region_k = 3
         self.use_search_region = True
-        # self.KF = KalmanFilter(0.05, 0.5, 0.5, 1, 0.1,0.1)
+        if use_kf:
+            self.KF = KalmanFilter(0.05, 0.5, 0.5, 1, 0.1,0.1)
 
 
     """ check() 
@@ -138,7 +140,9 @@ class OcclusionHandler():
         return output_state
 
     def in_search_region(self, prev_state: list, curr_state: list) -> bool:
-        """"""
+        """ Is current state center in search region of previous state ? 
+            Return value -> Y: True N: False """
+            
         prev_x, prev_y = prev_state[0], prev_state[1]
         prev_w, prev_h = prev_state[2], prev_state[3]
 
